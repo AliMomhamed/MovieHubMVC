@@ -1,0 +1,32 @@
+﻿@model MovieHubMVC.Models.Actor
+
+@{
+    ViewData["Title"] = "Delete Actor";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4 text-danger">Delete Actor</h1>
+
+    <div class="card mb-4 border-danger">
+        <div class="card-header bg-danger text-white">
+            <i class="fas fa-exclamation-triangle me-1"></i>
+            Confirm Delete
+        </div>
+        <div class="card-body">
+            <p>Are you sure you want to delete actor <strong>@Model.Name</strong>?</p>
+            <p>Movies:</p>
+            <ul>
+                @foreach(var movie in Model.Movies)
+                {
+                    <li>@movie.Name</li>
+                }
+            </ul>
+
+            <form asp-area="Admin" asp-controller="Actor" asp-action="Delete" method="post">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</button>
+                <a asp-area="Admin" asp-controller="Actor" asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

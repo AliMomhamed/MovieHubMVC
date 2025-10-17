@@ -1,0 +1,28 @@
+﻿@model MovieHubMVC.Models.Actor
+
+@{
+    ViewData["Title"] = "Actor Details";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Actor Details</h1>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-info-circle me-1"></i>
+            Actor Info
+        </div>
+        <div class="card-body">
+            <h4>@Model.Name</h4>
+            <p><strong>Movies:</strong></p>
+            <ul>
+                @foreach(var movie in Model.Movies)
+                {
+                    <li>@movie.Name</li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <a asp-area="Admin" asp-controller="Actor" asp-action="Index" class="btn btn-primary">Back to List</a>
+</div>

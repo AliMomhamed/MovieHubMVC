@@ -1,0 +1,41 @@
+﻿@model MovieHubMVC.Models.Movie
+
+@{
+    ViewData["Title"] = "Edit Movie";
+}
+
+<div class="container mt-4">
+    <h2>Edit Movie</h2>
+    <hr />
+
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    
+
+        <div class="mb-3">
+            <label asp-for="CategoryId" class="form-label">Category</label>
+            <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId"></select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CinemaId" class="form-label">Cinema</label>
+            <select asp-for="CinemaId" class="form-select" asp-items="ViewBag.CinemaId"></select>
+            <span asp-validation-for="CinemaId" class="text-danger"></span>
+        </div>
+
+
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save Changes</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

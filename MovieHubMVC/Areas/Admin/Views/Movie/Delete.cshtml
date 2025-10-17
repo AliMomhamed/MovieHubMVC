@@ -1,0 +1,34 @@
+﻿@model MovieHubMVC.Models.Movie
+
+@{
+    ViewData["Title"] = "Delete Movie";
+}
+
+<div class="container mt-4">
+    <h2>Delete Movie</h2>
+    <hr />
+
+    <div class="alert alert-danger">
+        Are you sure you want to delete this movie?
+    </div>
+
+    <dl class="row">
+       
+
+        <dt class="col-sm-3">Category</dt>
+        <dd class="col-sm-9">@Model.Category?.Name</dd>
+
+        <dt class="col-sm-3">Cinema</dt>
+        <dd class="col-sm-9">@Model.Cinema?.Name</dd>
+
+      
+        <dt class="col-sm-3">Description</dt>
+        <dd class="col-sm-9">@Model.Description</dd>
+    </dl>
+
+    <form asp-action="DeleteConfirmed" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

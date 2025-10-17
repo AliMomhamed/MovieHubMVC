@@ -1,0 +1,41 @@
+﻿@model MovieHubMVC.Models.Actor
+
+@{
+    ViewData["Title"] = "Edit Actor";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Add Actor</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Actor" asp-action="Index">Actors</a></li>
+        <li class="breadcrumb-item active">Create</li>
+    </ol>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header">
+            <i class="fas fa-user-plus me-1"></i>
+            New Actor
+        </div>
+        <div class="card-body">
+            <form asp-area="Admin" asp-controller="Actor" asp-action="Create" method="post">
+                <div class="form-floating mb-3">
+                    <input asp-for="Name" class="form-control" placeholder="Actor Name"/>
+                    <label asp-for="Name">Actor Name</label>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Movies</label>
+                    <select asp-for="Movies" asp-items="ViewBag.Movies" multiple class="form-select"></select>
+                </div>
+
+                <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save</button>
+                <a asp-area="Admin" asp-controller="Actor" asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
