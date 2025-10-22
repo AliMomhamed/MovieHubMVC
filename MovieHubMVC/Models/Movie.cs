@@ -2,48 +2,52 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
-namespace MovieHubMVC.Models;
-
-public partial class Movie
+namespace MovieHubMVC.Models
 {
-    [Key]
-    public int Id { get; set; }
+    public partial class Movie
+    {
+        [Key]
+        public int Id { get; set; }
 
-    [StringLength(200)]
-    public string Name { get; set; } = null!;
+        [StringLength(150)]
+        [Required]
+        public string Name { get; set; } = null!;
 
-    public string? Description { get; set; }
+        [StringLength(500)]
+        public string? Description { get; set; }
 
-    [Column(TypeName = "decimal(10, 2)")]
-    public decimal? Price { get; set; }
+        public double Price { get; set; }
 
-    [StringLength(50)]
-    public string? Status { get; set; }
+        [StringLength(250)]
+        public string? MainImg { get; set; }
 
-    [Column(TypeName = "datetime")]
-    public DateTime? DateTime { get; set; }
+        public DateTime DateTime { get; set; } = DateTime.Now;
 
-    [StringLength(250)]
-    public string? MainImg { get; set; }
+        public bool Status { get; set; } = true;
 
-    public int CategoryId { get; set; }
+        // ✅ Category (اختياري)
+        [ForeignKey("Category")]
+        public int? CategoryId { get; set; }
+        public virtual Category? Category { get; set; }
 
-    public int CinemaId { get; set; }
+        // ✅ Cinema (اختياري)
+        [ForeignKey("Cinema")]
+        public int? CinemaId { get; set; }
+        public virtual Cinema? Cinema { get; set; }
 
-    [ForeignKey("CategoryId")]
-    [InverseProperty("Movies")]
-    public virtual Category Category { get; set; } = null!;
+        // ✅ Actors (Many-to-Many)
+        public virtual ICollection<Actor> Actors { get; set; } = new List<Actor>();
 
-    [ForeignKey("CinemaId")]
-    [InverseProperty("Movies")]
-    public virtual Cinema Cinema { get; set; } = null!;
+        // ✅ Movie Images (One-to-Many)
+        public virtual ICollection<MovieImage> MovieImages { get; set; } = new List<MovieImage>();
 
-    [InverseProperty("Movie")]
-    public virtual ICollection<MovieImage> MovieImages { get; set; } = new List<MovieImage>();
+        // ✅ Not mapped fields for upload
+        [NotMapped]
+        public List<int> SelectedActorsIds { get; set; } = new();
 
-    [ForeignKey("MovieId")]
-    [InverseProperty("Movies")]
-    public virtual ICollection<Actor> Actors { get; set; } = new List<Actor>();
+        [NotMapped]
+        public List<IFormFile>? UploadedImages { get; set; }
+    }
 }

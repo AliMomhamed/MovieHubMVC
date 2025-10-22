@@ -1,16 +1,32 @@
 ﻿@model MovieHubMVC.Models.Category
-
 @{
     ViewData["Title"] = "Category Details";
 }
 
-<h2>Category Details</h2>
+<div class="container py-5" style="background-color:#f8f9fa; min-height:100vh;">
+    <div class="card shadow-sm border-0 rounded-4 p-4 mx-auto" style="max-width:700px;">
+        <h3 class="fw-semibold text-dark mb-3">📁 @Model.Name</h3>
+        <p class="text-muted mb-4">List of movies under this category:</p>
 
-<div>
-    <h4>@Model.Name</h4>
+        <ul class="list-group list-group-flush rounded-3">
+            @if (Model.Movies != null && Model.Movies.Any())
+            {
+                foreach (var movie in Model.Movies)
+                {
+                    <li class="list-group-item border-0" style="background-color:#f9fbff;">
+                        🎬 @movie.Name <span class="text-muted">(@movie.Cinema?.Name)</span>
+                    </li>
+                }
+            }
+            else
+            {
+                <li class="list-group-item border-0 text-muted" style="background-color:#f9fbff;">No movies available</li>
+            }
+        </ul>
+
+        <div class="d-flex justify-content-end mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning rounded-pill px-4 me-2">Edit</a>
+            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">Back</a>
+        </div>
+    </div>
 </div>
-
-<p>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-</p>

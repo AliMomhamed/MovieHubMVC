@@ -1,30 +1,49 @@
 ﻿@model MovieHubMVC.Models.Cinema
-
 @{
-    ViewData["Title"] = "Create Cinema";
+    ViewData["Title"] = "Add New Cinema";
 }
 
-<div class="container mt-4">
-    <h2>Add New Cinema</h2>
-    <hr />
+<div class="container py-5" style="background-color:#f8f9fa; min-height:100vh;">
+    <div class="card shadow-sm border-0 rounded-4 p-4 mx-auto" style="max-width:700px;">
+        <h3 class="fw-semibold text-secondary mb-4">➕ Add New Cinema</h3>
 
-    <form asp-action="Create" method="post">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="form-label fw-medium">Cinema Name</label>
+                <input asp-for="Name" class="form-control rounded-3" placeholder="Enter cinema name" />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="Name" class="form-label"></label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
+            <div class="mb-3">
+                <label class="form-label fw-medium">Description</label>
+                <textarea asp-for="Description" rows="3" class="form-control rounded-3" placeholder="Write a short description"></textarea>
+                <span asp-validation-for="Description" class="text-danger small"></span>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="Location" class="form-label"></label>
-            <input asp-for="Location" class="form-control" />
-            <span asp-validation-for="Location" class="text-danger"></span>
-        </div>
+            <div class="mb-3">
+                <label class="form-label fw-medium">Image</label>
+                <input asp-for="ImageFile" type="file" class="form-control rounded-3" id="imageInput" accept="image/*" />
+                <img id="preview" class="mt-3 rounded-3 shadow-sm" style="width:140px; display:none;" />
+            </div>
 
-
-        <button type="submit" class="btn btn-primary">Create</button>
-        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-    </form>
+            <div class="d-flex justify-content-end mt-4">
+                <button type="submit" class="btn btn-primary rounded-pill px-4 me-2">Save</button>
+                <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">Cancel</a>
+            </div>
+        </form>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        const input = document.getElementById('imageInput');
+        const preview = document.getElementById('preview');
+        input.addEventListener('change', e => {
+            const file = e.target.files[0];
+            if (file) {
+                preview.src = URL.createObjectURL(file);
+                preview.style.display = 'block';
+            }
+        });
+    </script>
+}

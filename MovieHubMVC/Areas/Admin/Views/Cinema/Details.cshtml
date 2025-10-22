@@ -1,26 +1,38 @@
 ﻿@model MovieHubMVC.Models.Cinema
-
 @{
     ViewData["Title"] = "Cinema Details";
 }
 
-<div class="container mt-4">
-    <h2>Cinema Details</h2>
-    <hr />
+<div class="container py-5" style="background-color:#f8f9fa; min-height:100vh;">
+    <div class="card shadow-sm border-0 rounded-4 p-4 mx-auto" style="max-width:700px;">
+        <div class="d-flex align-items-center mb-4">
+            <img src="@Model.ImageUrl" class="rounded-4 shadow-sm" style="width:140px; height:140px; object-fit:cover;">
+            <div class="ms-4">
+                <h3 class="fw-semibold text-dark">@Model.Name</h3>
+                <p class="text-muted">@Model.Description</p>
+            </div>
+        </div>
 
-    <dl class="row">
-        <dt class="col-sm-3">ID</dt>
-        <dd class="col-sm-9">@Model.Id</dd>
+        <h5 class="fw-semibold text-secondary mb-3">🎬 Movies:</h5>
+        <ul class="list-group list-group-flush rounded-3">
+            @if (Model.Movies != null && Model.Movies.Any())
+            {
+                foreach (var movie in Model.Movies)
+                {
+                    <li class="list-group-item border-0 text-dark" style="background-color:#f9fbff;">
+                        @movie.Name <span class="text-muted">(@movie.Category?.Name)</span>
+                    </li>
+                }
+            }
+            else
+            {
+                <li class="list-group-item border-0 text-muted" style="background-color:#f9fbff;">No movies available</li>
+            }
+        </ul>
 
-        <dt class="col-sm-3">Name</dt>
-        <dd class="col-sm-9">@Model.Name</dd>
-
-        <dt class="col-sm-3">Location</dt>
-        <dd class="col-sm-9">@Model.Location</dd>
-
-
-    </dl>
-
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        <div class="d-flex justify-content-end mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning rounded-pill px-4 me-2">Edit</a>
+            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">Back</a>
+        </div>
+    </div>
 </div>

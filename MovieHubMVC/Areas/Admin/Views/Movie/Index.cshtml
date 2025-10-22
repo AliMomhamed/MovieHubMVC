@@ -1,39 +1,57 @@
 ﻿@model IEnumerable<MovieHubMVC.Models.Movie>
-
 @{
-    ViewData["Title"] = "Movies";
+    ViewData["Title"] = "Movies List";
 }
 
-<div class="container mt-4">
-    <h2 class="mb-3">Movies</h2>
+<div class="container py-5" style="background-color:#f8f9fa; min-height:100vh;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-semibold text-secondary">🎬 Movies List</h2>
+        <a asp-action="Create" class="btn btn-primary rounded-pill px-4 shadow-sm">➕ Add Movie</a>
+    </div>
 
-    <a asp-action="Create" class="btn btn-primary mb-3">
-        <i class="bi bi-plus-circle"></i> Add New Movie
-    </a>
-
-    <table class="table table-bordered table-striped align-middle">
-        <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Category</th>
-                <th>Cinema</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.Category?.Name</td>
-                <td>@item.Cinema?.Name</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-0">
+            <table class="table align-middle mb-0">
+                <thead style="background-color:#e9f3ff;">
+                    <tr class="text-secondary">
+                        <th>Poster</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Cinema</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var movie in Model)
+                    {
+                        <tr class="border-bottom">
+                            <td>
+                                <img src="@movie.MainImg" class="rounded-3 shadow-sm" style="width:60px; height:60px; object-fit:cover;">
+                            </td>
+                            <td class="fw-medium">@movie.Name</td>
+                            <td>@movie.Category?.Name</td>
+                            <td>@movie.Cinema?.Name</td>
+                            <td>$@movie.Price</td>
+                            <td>
+                                @if (movie.Status)
+                                {
+                                    <span class="badge bg-success rounded-pill px-3">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary rounded-pill px-3">Hidden</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <a asp-action="Edit" asp-route-id="@movie.Id" class="btn btn-outline-warning btn-sm rounded-pill px-3">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@movie.Id" class="btn btn-outline-danger btn-sm rounded-pill px-3">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

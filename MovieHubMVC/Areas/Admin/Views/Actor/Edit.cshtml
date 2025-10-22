@@ -1,41 +1,35 @@
 ﻿@model MovieHubMVC.Models.Actor
-
 @{
     ViewData["Title"] = "Edit Actor";
 }
 
-<div class="container-fluid px-4">
-    <h1 class="mt-4">Add Actor</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Actor" asp-action="Index">Actors</a></li>
-        <li class="breadcrumb-item active">Create</li>
-    </ol>
+<div class="container py-5" style="background-color:#f8f9fa; min-height:100vh;">
+    <div class="card shadow-sm border-0 rounded-4 p-4 mx-auto" style="max-width:700px;">
+        <h3 class="fw-semibold text-secondary mb-4">✏️ Edit Actor</h3>
 
-    <div class="card shadow-sm mb-4">
-        <div class="card-header">
-            <i class="fas fa-user-plus me-1"></i>
-            New Actor
-        </div>
-        <div class="card-body">
-            <form asp-area="Admin" asp-controller="Actor" asp-action="Create" method="post">
-                <div class="form-floating mb-3">
-                    <input asp-for="Name" class="form-control" placeholder="Actor Name"/>
-                    <label asp-for="Name">Actor Name</label>
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" />
 
-                <div class="mb-3">
-                    <label class="form-label">Movies</label>
-                    <select asp-for="Movies" asp-items="ViewBag.Movies" multiple class="form-select"></select>
-                </div>
+            <div class="mb-3">
+                <label class="form-label fw-medium">Name</label>
+                <input asp-for="Name" class="form-control rounded-3" />
+            </div>
 
-                <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save</button>
-                <a asp-area="Admin" asp-controller="Actor" asp-action="Index" class="btn btn-secondary">Cancel</a>
-            </form>
-        </div>
+            <div class="mb-3">
+                <label class="form-label fw-medium">Bio</label>
+                <textarea asp-for="Bio" rows="3" class="form-control rounded-3"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-medium">Current Image</label><br />
+                <img src="@Model.ImageUrl" class="rounded-3 shadow-sm mb-2" style="width:100px; height:100px; object-fit:cover;" />
+                <input type="file" name="ImageFile" class="form-control rounded-3" />
+            </div>
+
+            <div class="d-flex justify-content-end mt-4">
+                <button type="submit" class="btn btn-primary rounded-pill px-4 me-2">Save</button>
+                <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">Back</a>
+            </div>
+        </form>
     </div>
 </div>
-
-@section Scripts{
-    <partial name="_ValidationScriptsPartial" />
-}

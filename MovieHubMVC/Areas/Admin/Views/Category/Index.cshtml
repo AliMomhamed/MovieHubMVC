@@ -1,35 +1,40 @@
 ﻿@model IEnumerable<MovieHubMVC.Models.Category>
 
 @{
-    ViewData["Title"] = "Categories";
+    ViewData["Title"] = "Categories List";
 }
 
-<h2>Categories</h2>
+<div class="container py-5" style="background-color:#f8f9fa; min-height:100vh;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-semibold text-secondary">📂 Categories List</h2>
+        <a asp-action="Create" class="btn btn-primary shadow-sm rounded-pill px-4">➕ Add Category</a>
+    </div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">+ Create New</a>
-</p>
-
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.Name</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-0">
+            <table class="table align-middle mb-0">
+                <thead style="background-color:#e9f3ff;">
+                    <tr class="text-secondary">
+                        <th>Name</th>
+                        <th>Movies Count</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cat in Model)
+                    {
+                        <tr class="border-bottom">
+                            <td class="fw-medium">@cat.Name</td>
+                            <td>@(cat.Movies?.Count() ?? 0)</td>
+                            <td class="text-center">
+                                <a asp-action="Details" asp-route-id="@cat.Id" class="btn btn-outline-info btn-sm rounded-pill px-3">Details</a>
+                                <a asp-action="Edit" asp-route-id="@cat.Id" class="btn btn-outline-warning btn-sm rounded-pill px-3">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@cat.Id" class="btn btn-outline-danger btn-sm rounded-pill px-3">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

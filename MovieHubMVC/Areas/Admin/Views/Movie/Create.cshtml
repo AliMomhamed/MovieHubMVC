@@ -1,43 +1,63 @@
 ﻿@model MovieHubMVC.Models.Movie
-
 @{
-    ViewData["Title"] = "Create Movie";
+    ViewData["Title"] = "Add Movie";
 }
 
-<div class="container mt-4">
-    <h2>Add New Movie</h2>
-    <hr />
+<div class="container py-5" style="background-color:#f8f9fa; min-height:100vh;">
+    <div class="card shadow-sm border-0 rounded-4 p-4 mx-auto" style="max-width:800px;">
+        <h3 class="fw-semibold text-secondary mb-4">➕ Add New Movie</h3>
 
-    <form asp-action="Create" method="post">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="form-label fw-medium">Movie Name</label>
+                <input asp-for="Name" class="form-control rounded-3" placeholder="Enter movie name" />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
 
-      
+            <div class="mb-3">
+                <label class="form-label fw-medium">Description</label>
+                <textarea asp-for="Description" class="form-control rounded-3" rows="3"></textarea>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="CategoryId" class="form-label">Category</label>
-            <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId">
-                <option value="">-- Select Category --</option>
-            </select>
-            <span asp-validation-for="CategoryId" class="text-danger"></span>
-        </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-medium">Price</label>
+                    <input asp-for="Price" class="form-control rounded-3" placeholder="Enter price" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-medium">Status</label>
+                    <select asp-for="Status" class="form-select rounded-3">
+                        <option value="true">Active</option>
+                        <option value="false">Hidden</option>
+                    </select>
+                </div>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="CinemaId" class="form-label">Cinema</label>
-            <select asp-for="CinemaId" class="form-select" asp-items="ViewBag.CinemaId">
-                <option value="">-- Select Cinema --</option>
-            </select>
-            <span asp-validation-for="CinemaId" class="text-danger"></span>
-        </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-medium">Cinema</label>
+                    <select asp-for="CinemaId" class="form-select rounded-3" asp-items="ViewBag.CinemaId"></select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-medium">Category</label>
+                    <select asp-for="CategoryId" class="form-select rounded-3" asp-items="ViewBag.CategoryId"></select>
+                </div>
+            </div>
 
-        
+            <div class="mb-3">
+                <label class="form-label fw-medium">Actors</label>
+                <select asp-for="SelectedActorsIds" asp-items="ViewBag.Actors" multiple class="form-select rounded-3"></select>
+            </div>
 
-        <div class="mb-3">
-            <label asp-for="Description" class="form-label"></label>
-            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
-        </div>
+            <div class="mb-3">
+                <label class="form-label fw-medium">Upload Images</label>
+                <input asp-for="UploadedImages" type="file" multiple class="form-control rounded-3" accept="image/*" />
+            </div>
 
-        <button type="submit" class="btn btn-primary">Create</button>
-        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-    </form>
+            <div class="d-flex justify-content-end mt-4">
+                <button type="submit" class="btn btn-primary rounded-pill px-4 me-2">Save</button>
+                <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">Cancel</a>
+            </div>
+        </form>
+    </div>
 </div>

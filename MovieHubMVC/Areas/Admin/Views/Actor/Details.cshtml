@@ -1,28 +1,38 @@
 ﻿@model MovieHubMVC.Models.Actor
-
 @{
     ViewData["Title"] = "Actor Details";
 }
 
-<div class="container-fluid px-4">
-    <h1 class="mt-4">Actor Details</h1>
-
-    <div class="card mb-4">
-        <div class="card-header">
-            <i class="fas fa-info-circle me-1"></i>
-            Actor Info
+<div class="container py-5" style="background-color:#f8f9fa; min-height:100vh;">
+    <div class="card shadow-sm border-0 rounded-4 p-4 mx-auto" style="max-width:700px;">
+        <div class="d-flex align-items-center mb-4">
+            <img src="@Model.ImageUrl" class="rounded-circle shadow-sm" style="width:120px; height:120px; object-fit:cover;">
+            <div class="ms-4">
+                <h3 class="fw-semibold text-dark">@Model.Name</h3>
+                <p class="text-muted">@Model.Bio</p>
+            </div>
         </div>
-        <div class="card-body">
-            <h4>@Model.Name</h4>
-            <p><strong>Movies:</strong></p>
-            <ul>
-                @foreach(var movie in Model.Movies)
+
+        <h5 class="fw-semibold text-secondary mb-3">🎬 Movies:</h5>
+        <ul class="list-group list-group-flush rounded-3">
+            @if (Model.Movies != null && Model.Movies.Any())
+            {
+                foreach (var movie in Model.Movies)
                 {
-                    <li>@movie.Name</li>
+                    <li class="list-group-item border-0 text-dark" style="background-color:#f9fbff;">
+                        @movie.Name
+                    </li>
                 }
-            </ul>
+            }
+            else
+            {
+                <li class="list-group-item border-0 text-muted" style="background-color:#f9fbff;">No movies available</li>
+            }
+        </ul>
+
+        <div class="d-flex justify-content-end mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning rounded-pill px-4 me-2">Edit</a>
+            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">Back</a>
         </div>
     </div>
-
-    <a asp-area="Admin" asp-controller="Actor" asp-action="Index" class="btn btn-primary">Back to List</a>
 </div>

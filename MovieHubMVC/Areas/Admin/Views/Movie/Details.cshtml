@@ -1,29 +1,104 @@
 ﻿@model MovieHubMVC.Models.Movie
-
 @{
     ViewData["Title"] = "Movie Details";
 }
 
-<div class="container mt-4">
-    <h2>Movie Details</h2>
-    <hr />
+<div class="container py-5" style="background-color:#f8f9fa; min-height:100vh;">
+    <div class="card shadow-sm border-0 rounded-4 mx-auto p-4" style="max-width:1000px;">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-semibold text-secondary">🎞 Movie Details</h3>
+            <a asp-action="Index" class="btn btn-outline-primary rounded-pill px-4">← Back to List</a>
+        </div>
 
-    <dl class="row">
-        <dt class="col-sm-3">ID</dt>
-        <dd class="col-sm-9">@Model.Id</dd>
+        <div class="row g-4">
+            <div class="col-md-4 text-center">
+                <img src="@Model.MainImg" alt="@Model.Name" class="rounded-4 shadow-sm" style="width:100%; max-width:280px; height:320px; object-fit:cover;" />
+            </div>
 
-      
-        <dt class="col-sm-3">Category</dt>
-        <dd class="col-sm-9">@Model.Category?.Name</dd>
+            <div class="col-md-8">
+                <h4 class="fw-semibold text-dark mb-2">@Model.Name</h4>
+                <p class="text-muted">@Model.Description</p>
 
-        <dt class="col-sm-3">Cinema</dt>
-        <dd class="col-sm-9">@Model.Cinema?.Name</dd>
+                <div class="row mt-4">
+                    <div class="col-sm-6 mb-3">
+                        <p class="fw-medium mb-1 text-secondary">🎟 Price:</p>
+                        <span class="badge bg-primary-subtle text-primary fw-semibold px-3 py-2">$@Model.Price</span>
+                    </div>
 
-      
-        <dt class="col-sm-3">Description</dt>
-        <dd class="col-sm-9">@Model.Description</dd>
-    </dl>
+                    <div class="col-sm-6 mb-3">
+                        <p class="fw-medium mb-1 text-secondary">📅 Date:</p>
+                        <span class="badge bg-light text-dark fw-semibold px-3 py-2">
+                            @Model.DateTime.ToString("MMMM dd, yyyy")
+                        </span>
 
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    </div>
+
+                    <div class="col-sm-6 mb-3">
+                        <p class="fw-medium mb-1 text-secondary">🏛 Cinema:</p>
+                        <span class="text-dark">@Model.Cinema?.Name</span>
+                    </div>
+
+                    <div class="col-sm-6 mb-3">
+                        <p class="fw-medium mb-1 text-secondary">📂 Category:</p>
+                        <span class="text-dark">@Model.Category?.Name</span>
+                    </div>
+
+                    <div class="col-sm-6 mb-3">
+                        <p class="fw-medium mb-1 text-secondary">🎬 Status:</p>
+                        @if (Model.Status)
+                        {
+                            <span class="badge bg-success-subtle text-success rounded-pill px-3 py-2">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary-subtle text-secondary rounded-pill px-3 py-2">Hidden</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4" />
+
+        <div class="mb-4">
+            <h5 class="fw-semibold text-secondary mb-3">👥 Actors</h5>
+            @if (Model.Actors != null && Model.Actors.Any())
+            {
+                <div class="d-flex flex-wrap gap-3">
+                    @foreach (var actor in Model.Actors)
+                    {
+                        <div class="card shadow-sm border-0 rounded-4 text-center" style="width:140px;">
+                            <img src="@actor.ImageUrl" class="rounded-top-4" style="width:100%; height:150px; object-fit:cover;" />
+                            <div class="p-2">
+                                <span class="fw-medium">@actor.Name</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-muted fst-italic">No actors linked with this movie.</p>
+            }
+        </div>
+
+        <hr class="my-4" />
+
+        <div>
+            <h5 class="fw-semibold text-secondary mb-3">🖼 Gallery</h5>
+            @if (Model.MovieImages != null && Model.MovieImages.Any())
+            {
+                <div class="d-flex flex-wrap gap-3">
+                    @foreach (var img in Model.MovieImages)
+                    {
+                        <img src="@img.ImageUrl" class="rounded-4 shadow-sm" style="width:140px; height:140px; object-fit:cover;" />
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-muted fst-italic">No images available for this movie.</p>
+            }
+        </div>
+    </div>
 </div>

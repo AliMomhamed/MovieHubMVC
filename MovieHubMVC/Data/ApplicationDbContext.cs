@@ -10,31 +10,31 @@ namespace MovieHubMVC.Data
         {
         }
 
-        public virtual DbSet<Actor> Actors { get; set; }
-        public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<Cinema> Cinemas { get; set; }
-        public virtual DbSet<Movie> Movies { get; set; }
-        public virtual DbSet<MovieImage> MovieImages { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Actor> Actors { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Cinema> Cinemas { get; set; }
+        public DbSet<MovieImage> MovieImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Movie>()
-                .HasOne(d => d.Category)
-                .WithMany(p => p.Movies)
-                .HasForeignKey(d => d.CategoryId)
+                .HasOne(m => m.Category)
+                .WithMany(c => c.Movies)
+                .HasForeignKey(m => m.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Movie>()
-                .HasOne(d => d.Cinema)
-                .WithMany(p => p.Movies)
-                .HasForeignKey(d => d.CinemaId)
+                .HasOne(m => m.Cinema)
+                .WithMany(c => c.Movies)
+                .HasForeignKey(m => m.CinemaId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Movie>()
-                .HasMany(d => d.Actors)
-                .WithMany(p => p.Movies)
+                .HasMany(m => m.Actors)
+                .WithMany(a => a.Movies)
                 .UsingEntity<Dictionary<string, object>>(
                     "MovieActor",
                     r => r.HasOne<Actor>().WithMany().HasForeignKey("ActorId"),
@@ -43,13 +43,12 @@ namespace MovieHubMVC.Data
                     {
                         j.HasKey("MovieId", "ActorId");
                         j.ToTable("MovieActors");
-                    }
-                );
+                    });
 
             modelBuilder.Entity<MovieImage>()
-                .HasOne(d => d.Movie)
-                .WithMany(p => p.MovieImages)
-                .HasForeignKey(d => d.MovieId)
+                .HasOne(mi => mi.Movie)
+                .WithMany(m => m.MovieImages)
+                .HasForeignKey(mi => mi.MovieId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
