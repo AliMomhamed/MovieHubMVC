@@ -7,26 +7,57 @@
 <div class="container-fluid px-4">
     <h1 class="mt-4 text-danger">Delete Actor</h1>
 
-    <div class="card mb-4 border-danger">
+    <div class="card mb-4 border-danger shadow-sm">
         <div class="card-header bg-danger text-white">
             <i class="fas fa-exclamation-triangle me-1"></i>
             Confirm Delete
         </div>
         <div class="card-body">
-            <p>Are you sure you want to delete actor <strong>@Model.Name</strong>?</p>
-            <p>Movies:</p>
-            <ul>
-                @foreach(var movie in Model.Movies)
-                {
-                    <li>@movie.Name</li>
-                }
-            </ul>
+            <div class="row align-items-center">
+                <div class="col-md-3 text-center">
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded shadow-sm mb-3" style="max-height: 250px;" />
+                    }
+                    else
+                    {
+                        <img src="/images/no-image.png" alt="No Image" class="img-fluid rounded shadow-sm mb-3" style="max-height: 250px;" />
+                    }
+                </div>
 
-            <form asp-area="Admin" asp-controller="Actor" asp-action="Delete" method="post">
-                <input type="hidden" asp-for="Id" />
-                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</button>
-                <a asp-area="Admin" asp-controller="Actor" asp-action="Index" class="btn btn-secondary">Cancel</a>
-            </form>
+                <div class="col-md-9">
+                    <h4 class="text-danger">@Model.Name</h4>
+                    @if (!string.IsNullOrEmpty(Model.Bio))
+                    {
+                        <p class="text-muted">@Model.Bio</p>
+                    }
+
+                    <p class="fw-bold">Movies:</p>
+                    @if (Model.Movies != null && Model.Movies.Any())
+                    {
+                        <ul class="list-group mb-3">
+                            @foreach (var movie in Model.Movies)
+                            {
+                                <li class="list-group-item">@movie.Name</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No movies associated with this actor.</p>
+                    }
+
+                    <form asp-area="Admin" asp-controller="Actor" asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="submit" class="btn btn-danger me-2">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                        <a asp-area="Admin" asp-controller="Actor" asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>

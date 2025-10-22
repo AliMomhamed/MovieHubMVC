@@ -50,10 +50,27 @@ namespace MovieHubMVC.Areas.Admin.Controllers
         // POST: Admin/Actor/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Actor actor, int[] selectedMovies)
+        public async Task<IActionResult> Create(Actor actor, int[] selectedMovies, IFormFile? ImageFile)
         {
             if (ModelState.IsValid)
             {
+                if (ImageFile != null && ImageFile.Length > 0)
+                {
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(ImageFile.FileName);
+                    var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "actors");
+
+                    if (!Directory.Exists(uploadPath))
+                        Directory.CreateDirectory(uploadPath);
+
+                    var filePath = Path.Combine(uploadPath, fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await ImageFile.CopyToAsync(stream);
+                    }
+
+                    actor.ImageUrl = "/images/actors/" + fileName;
+                }
+
                 actor.Movies = _context.Movies
                     .Where(m => selectedMovies.Contains(m.Id))
                     .ToList();
@@ -88,7 +105,7 @@ namespace MovieHubMVC.Areas.Admin.Controllers
         // POST: Admin/Actor/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Actor actor, int[] selectedMovies)
+        public async Task<IActionResult> Edit(int id, Actor actor, int[] selectedMovies, IFormFile? ImageFile)
         {
             if (id != actor.Id) return NotFound();
 
@@ -101,10 +118,35 @@ namespace MovieHubMVC.Areas.Admin.Controllers
                 if (existingActor == null) return NotFound();
 
                 existingActor.Name = actor.Name;
+                existingActor.Bio = actor.Bio;
                 existingActor.Movies.Clear();
                 existingActor.Movies = _context.Movies
                     .Where(m => selectedMovies.Contains(m.Id))
                     .ToList();
+
+                if (ImageFile != null && ImageFile.Length > 0)
+                {
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(ImageFile.FileName);
+                    var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "actors");
+
+                    if (!Directory.Exists(uploadPath))
+                        Directory.CreateDirectory(uploadPath);
+
+                    var filePath = Path.Combine(uploadPath, fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await ImageFile.CopyToAsync(stream);
+                    }
+
+                    if (!string.IsNullOrEmpty(existingActor.ImageUrl))
+                    {
+                        var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingActor.ImageUrl.TrimStart('/'));
+                        if (System.IO.File.Exists(oldImagePath))
+                            System.IO.File.Delete(oldImagePath);
+                    }
+
+                    existingActor.ImageUrl = "/images/actors/" + fileName;
+                }
 
                 _context.Update(existingActor);
                 await _context.SaveChangesAsync();
@@ -118,7 +160,7 @@ namespace MovieHubMVC.Areas.Admin.Controllers
             return View(actor);
         }
 
-        // GET: Admin/Actor/Delete/5
+     
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -140,6 +182,14 @@ namespace MovieHubMVC.Areas.Admin.Controllers
             var actor = await _context.Actors.FindAsync(id);
             if (actor != null)
             {
+             
+                if (!string.IsNullOrEmpty(actor.ImageUrl))
+                {
+                    var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", actor.ImageUrl.TrimStart('/'));
+                    if (System.IO.File.Exists(imagePath))
+                        System.IO.File.Delete(imagePath);
+                }
+
                 _context.Actors.Remove(actor);
                 await _context.SaveChangesAsync();
             }

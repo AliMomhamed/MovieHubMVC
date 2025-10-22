@@ -7,22 +7,52 @@
 <div class="container-fluid px-4">
     <h1 class="mt-4">Actor Details</h1>
 
-    <div class="card mb-4">
+    <div class="card shadow-sm mb-4">
         <div class="card-header">
-            <i class="fas fa-info-circle me-1"></i>
-            Actor Info
+            <i class="fas fa-user me-1"></i>
+            Actor Information
         </div>
         <div class="card-body">
-            <h4>@Model.Name</h4>
-            <p><strong>Movies:</strong></p>
-            <ul>
-                @foreach(var movie in Model.Movies)
-                {
-                    <li>@movie.Name</li>
-                }
-            </ul>
+            <div class="row align-items-start">
+                <div class="col-md-3 text-center">
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded shadow-sm mb-3" style="max-height: 250px;" />
+                    }
+                    else
+                    {
+                        <img src="/images/no-image.png" alt="No Image" class="img-fluid rounded shadow-sm mb-3" style="max-height: 250px;" />
+                    }
+                </div>
+
+                <div class="col-md-9">
+                    <h3 class="fw-bold">@Model.Name</h3>
+
+                    @if (!string.IsNullOrEmpty(Model.Bio))
+                    {
+                        <p class="text-muted mb-3">@Model.Bio</p>
+                    }
+
+                    <h5 class="fw-semibold mt-4">Movies:</h5>
+                    @if (Model.Movies != null && Model.Movies.Any())
+                    {
+                        <ul class="list-group">
+                            @foreach (var movie in Model.Movies)
+                            {
+                                <li class="list-group-item">@movie.Name</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No movies associated with this actor.</p>
+                    }
+                </div>
+            </div>
         </div>
     </div>
 
-    <a asp-area="Admin" asp-controller="Actor" asp-action="Index" class="btn btn-primary">Back to List</a>
+    <a asp-area="Admin" asp-controller="Actor" asp-action="Index" class="btn btn-primary">
+        <i class="fas fa-arrow-left"></i> Back to List
+    </a>
 </div>

@@ -17,16 +17,21 @@
             New Actor
         </div>
         <div class="card-body">
-            <form asp-area="Admin" asp-controller="Actor" asp-action="Create" method="post">
+            <form asp-area="Admin" asp-controller="Actor" asp-action="Create" method="post" enctype="multipart/form-data">
                 <div class="form-floating mb-3">
-                    <input asp-for="Name" class="form-control" placeholder="Actor Name"/>
+                    <input asp-for="Name" class="form-control" placeholder="Actor Name" />
                     <label asp-for="Name">Actor Name</label>
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
 
+                <div class="form-floating mb-3">
+                    <textarea asp-for="Bio" class="form-control" placeholder="Bio"></textarea>
+                    <label asp-for="Bio">Biography</label>
+                </div>
+
                 <div class="mb-3">
-                    <label class="form-label">Movies</label>
-                    <select asp-for="Movies" asp-items="ViewBag.Movies" multiple class="form-select"></select>
+                    <label class="form-label">Actor Image</label>
+                    <input type="file" name="ImageFile" class="form-control" accept="image/*" />
                 </div>
 
                 <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save</button>
@@ -36,7 +41,6 @@
     </div>
 </div>
 
-@section Scripts{
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-
