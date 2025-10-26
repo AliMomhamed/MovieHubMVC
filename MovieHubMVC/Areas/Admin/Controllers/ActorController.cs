@@ -46,16 +46,41 @@ namespace MovieHubMVC.Areas.Admin.Controllers
         // Create POST
         [HttpPost]
         [ValidateAntiForgeryToken]
+<<<<<<< HEAD
         public async Task<IActionResult> Create(Actor actor, IFormFile? ImageFile)
+=======
+        public async Task<IActionResult> Create(Actor actor, int[] selectedMovies, IFormFile? ImageFile)
+>>>>>>> c96d00b87659b9e5d31057d644ee82e4190593ad
         {
             if (ModelState.IsValid)
             {
                 if (ImageFile != null && ImageFile.Length > 0)
                 {
+<<<<<<< HEAD
                     var path = await SaveFile(ImageFile, "actors");
                     actor.ImageUrl = path;
                 }
 
+=======
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(ImageFile.FileName);
+                    var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "actors");
+
+                    if (!Directory.Exists(uploadPath))
+                        Directory.CreateDirectory(uploadPath);
+
+                    var filePath = Path.Combine(uploadPath, fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await ImageFile.CopyToAsync(stream);
+                    }
+
+                    actor.ImageUrl = "/images/actors/" + fileName;
+                }
+
+                actor.Movies = _context.Movies
+                    .Where(m => selectedMovies.Contains(m.Id))
+                    .ToList();
+>>>>>>> c96d00b87659b9e5d31057d644ee82e4190593ad
 
                 _context.Add(actor);
                 await _context.SaveChangesAsync();
@@ -79,7 +104,11 @@ namespace MovieHubMVC.Areas.Admin.Controllers
         // Edit POST
         [HttpPost]
         [ValidateAntiForgeryToken]
+<<<<<<< HEAD
         public async Task<IActionResult> Edit(int id, Actor actor, IFormFile? ImageFile)
+=======
+        public async Task<IActionResult> Edit(int id, Actor actor, int[] selectedMovies, IFormFile? ImageFile)
+>>>>>>> c96d00b87659b9e5d31057d644ee82e4190593ad
         {
             if (id != actor.Id) return NotFound();
 
@@ -103,8 +132,43 @@ namespace MovieHubMVC.Areas.Admin.Controllers
                     existing.ImageUrl = newPath;
                 }
 
+<<<<<<< HEAD
 
                 _context.Update(existing);
+=======
+                existingActor.Name = actor.Name;
+                existingActor.Bio = actor.Bio;
+                existingActor.Movies.Clear();
+                existingActor.Movies = _context.Movies
+                    .Where(m => selectedMovies.Contains(m.Id))
+                    .ToList();
+
+                if (ImageFile != null && ImageFile.Length > 0)
+                {
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(ImageFile.FileName);
+                    var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "actors");
+
+                    if (!Directory.Exists(uploadPath))
+                        Directory.CreateDirectory(uploadPath);
+
+                    var filePath = Path.Combine(uploadPath, fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await ImageFile.CopyToAsync(stream);
+                    }
+
+                    if (!string.IsNullOrEmpty(existingActor.ImageUrl))
+                    {
+                        var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingActor.ImageUrl.TrimStart('/'));
+                        if (System.IO.File.Exists(oldImagePath))
+                            System.IO.File.Delete(oldImagePath);
+                    }
+
+                    existingActor.ImageUrl = "/images/actors/" + fileName;
+                }
+
+                _context.Update(existingActor);
+>>>>>>> c96d00b87659b9e5d31057d644ee82e4190593ad
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -113,7 +177,11 @@ namespace MovieHubMVC.Areas.Admin.Controllers
             return View(actor);
         }
 
+<<<<<<< HEAD
         // Delete GET
+=======
+     
+>>>>>>> c96d00b87659b9e5d31057d644ee82e4190593ad
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -130,8 +198,18 @@ namespace MovieHubMVC.Areas.Admin.Controllers
             var actor = await _context.Actors.FindAsync(id);
             if (actor != null)
             {
+<<<<<<< HEAD
                 if (!string.IsNullOrEmpty(actor.ImageUrl))
                     DeleteFile(actor.ImageUrl);
+=======
+             
+                if (!string.IsNullOrEmpty(actor.ImageUrl))
+                {
+                    var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", actor.ImageUrl.TrimStart('/'));
+                    if (System.IO.File.Exists(imagePath))
+                        System.IO.File.Delete(imagePath);
+                }
+>>>>>>> c96d00b87659b9e5d31057d644ee82e4190593ad
 
                 _context.Actors.Remove(actor);
                 await _context.SaveChangesAsync();

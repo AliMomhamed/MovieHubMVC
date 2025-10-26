@@ -21,11 +21,14 @@
 
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
 	</ItemGroup>
-
 	<ItemGroup>
+<<<<<<< HEAD
 		
 		<Folder Include="wwwroot\images\actors\" />
 		<Folder Include="wwwroot\images\movies\" />
+=======
+	  <Folder Include="wwwroot\images\actors\" />
+>>>>>>> c96d00b87659b9e5d31057d644ee82e4190593ad
 	</ItemGroup>
 
 </Project> 
