@@ -50,11 +50,25 @@ namespace MovieHubMVC.Areas.Admin.Controllers
         // ✅ CREATE (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
+<<<<<<< HEAD
         public async Task<IActionResult> Create(Actor actor, IFormFile? imageFile, CancellationToken token)
+=======
+<<<<<<< HEAD
+        public override async Task<IActionResult> Create(Actor actor, CancellationToken token)
+        {
+            if (!ModelState.IsValid) return View(actor);
+=======
+<<<<<<< HEAD
+        public async Task<IActionResult> Create(Actor actor, IFormFile? ImageFile)
+=======
+        public async Task<IActionResult> Create(Actor actor, int[] selectedMovies, IFormFile? ImageFile)
+>>>>>>> c96d00b87659b9e5d31057d644ee82e4190593ad
+>>>>>>> 646407670c8dfea6397340b330a92f8260744824
         {
             if (!ModelState.IsValid)
                 return View(actor);
 
+<<<<<<< HEAD
             if (imageFile != null && imageFile.Length > 0)
                 actor.ImageUrl = await SaveFileAsync(imageFile, "actors", token);
 
@@ -72,6 +86,40 @@ namespace MovieHubMVC.Areas.Admin.Controllers
             if (actor == null)
                 return NotFound();
 
+=======
+=======
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(ImageFile.FileName);
+                    var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "actors");
+>>>>>>> e133ec3780a4770ca7812d7d77ac7058b01f79b9
+
+            if (actor.ImageFile != null)
+                actor.ImageUrl = await SaveFileAsync(actor.ImageFile, "actors", token);
+
+<<<<<<< HEAD
+            _dbSet.Add(actor);
+            await _context.SaveChangesAsync(token);
+=======
+                    var filePath = Path.Combine(uploadPath, fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await ImageFile.CopyToAsync(stream);
+                    }
+
+                    actor.ImageUrl = "/images/actors/" + fileName;
+                }
+
+                actor.Movies = _context.Movies
+                    .Where(m => selectedMovies.Contains(m.Id))
+                    .ToList();
+>>>>>>> c96d00b87659b9e5d31057d644ee82e4190593ad
+
+                _context.Add(actor);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+           
+>>>>>>> 646407670c8dfea6397340b330a92f8260744824
             return View(actor);
         }
 
@@ -97,10 +145,14 @@ namespace MovieHubMVC.Areas.Admin.Controllers
 
                 actor.ImageUrl = await SaveFileAsync(imageFile, "actors", token);
             }
+<<<<<<< HEAD
 
             _context.Update(actor);
             await _context.SaveChangesAsync(token);
 
+=======
+>>>>>>> e133ec3780a4770ca7812d7d77ac7058b01f79b9
+>>>>>>> 646407670c8dfea6397340b330a92f8260744824
             return RedirectToAction(nameof(Index));
         }
 

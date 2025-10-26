@@ -20,9 +20,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
+<<<<<<< HEAD
 		<Folder Include="wwwroot\images\actors\" />
 		<Folder Include="wwwroot\images\movies\" />
 		<Folder Include="wwwroot\images\cinemas\" />
+=======
+
+		
+		<Folder Include="wwwroot\images\actors\" />
+		<Folder Include="wwwroot\images\movies\" />
+
+	  <Folder Include="wwwroot\images\actors\" />
+
+>>>>>>> 646407670c8dfea6397340b330a92f8260744824
 	</ItemGroup>
 
 </Project>
