@@ -1,22 +1,22 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieHubMVC.Models
 {
-    public partial class Actor
+    public class Actor
     {
-        [Key]
         public int Id { get; set; }
 
-        [StringLength(150)]
-        public string Name { get; set; } = null!;
+        [Required, MaxLength(100)]
+        public string Name { get; set; } = string.Empty;
 
         public string? Bio { get; set; }
 
-        [StringLength(250)]
         public string? ImageUrl { get; set; }
 
-        // Many-to-Many with Movie
-        public virtual ICollection<Movie> Movies { get; set; } = new List<Movie>();
+        [NotMapped] 
+        public IFormFile? ImageFile { get; set; }
+
+        public ICollection<Movie> Movies { get; set; } = new List<Movie>();
     }
 }

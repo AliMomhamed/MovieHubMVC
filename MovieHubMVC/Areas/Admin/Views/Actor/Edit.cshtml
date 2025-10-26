@@ -3,6 +3,7 @@
     ViewData["Title"] = "Edit Actor";
 }
 
+<<<<<<< HEAD
 <div class="container py-5" style="background-color:#f8f9fa; min-height:100vh;">
     <div class="card shadow-sm border-0 rounded-4 p-4 mx-auto" style="max-width:700px;">
         <h3 class="fw-semibold text-secondary mb-4">✏️ Edit Actor</h3>
@@ -33,3 +34,67 @@
         </form>
     </div>
 </div>
+=======
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Edit Actor</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Actor" asp-action="Index">Actors</a></li>
+        <li class="breadcrumb-item active">Edit</li>
+    </ol>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header">
+            <i class="fas fa-user-edit me-1"></i>
+            Edit Actor Info
+        </div>
+        <div class="card-body">
+            <form asp-area="Admin" asp-controller="Actor" asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Name" class="form-control" placeholder="Actor Name" />
+                    <label asp-for="Name">Actor Name</label>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="ImageUrl" class="form-control" placeholder="Image URL" />
+                    <label asp-for="ImageUrl">Image URL</label>
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <textarea asp-for="Bio" class="form-control" style="height: 120px;" placeholder="Biography"></textarea>
+                    <label asp-for="Bio">Biography</label>
+                    <span asp-validation-for="Bio" class="text-danger"></span>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <div class="mb-3 text-center">
+                        <img src="@Model.ImageUrl" alt="@Model.Name" class="img-thumbnail shadow-sm" style="max-height:200px;" />
+                    </div>
+                }
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Movies</label>
+                    <select asp-for="Movies" asp-items="ViewBag.Movies" multiple class="form-select"></select>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <a asp-area="Admin" asp-controller="Actor" asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+>>>>>>> c96d00b87659b9e5d31057d644ee82e4190593ad

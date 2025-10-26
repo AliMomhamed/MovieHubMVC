@@ -1,53 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Http;
 
 namespace MovieHubMVC.Models
 {
-    public partial class Movie
+    public class Movie
     {
-        [Key]
         public int Id { get; set; }
 
-        [StringLength(150)]
-        [Required]
-        public string Name { get; set; } = null!;
+        [Required, MaxLength(150)]
+        public string Name { get; set; } = string.Empty;
 
-        [StringLength(500)]
         public string? Description { get; set; }
 
         public double Price { get; set; }
 
-        [StringLength(250)]
-        public string? MainImg { get; set; }
+        public string? Status { get; set; }
 
         public DateTime DateTime { get; set; } = DateTime.Now;
 
-        public bool Status { get; set; } = true;
+        public int CinemaId { get; set; }
+        public Cinema? Cinema { get; set; }
 
-        // ✅ Category (اختياري)
-        [ForeignKey("Category")]
-        public int? CategoryId { get; set; }
-        public virtual Category? Category { get; set; }
+        public int CategoryId { get; set; }
+        public Category? Category { get; set; }
 
-        // ✅ Cinema (اختياري)
-        [ForeignKey("Cinema")]
-        public int? CinemaId { get; set; }
-        public virtual Cinema? Cinema { get; set; }
+        public ICollection<Actor> Actors { get; set; } = new List<Actor>();
 
-        // ✅ Actors (Many-to-Many)
-        public virtual ICollection<Actor> Actors { get; set; } = new List<Actor>();
+        public string? MainImg { get; set; }
 
-        // ✅ Movie Images (One-to-Many)
-        public virtual ICollection<MovieImage> MovieImages { get; set; } = new List<MovieImage>();
+       
+        public string? ImageUrl { get; set; }
 
-        // ✅ Not mapped fields for upload
         [NotMapped]
-        public List<int> SelectedActorsIds { get; set; } = new();
+        public IFormFile? ImageFile { get; set; }
 
         [NotMapped]
         public List<IFormFile>? UploadedImages { get; set; }
+
+        [NotMapped]
+        public List<int>? SelectedActorsIds { get; set; }
+
+
+        public ICollection<MovieImage> MovieImages { get; set; } = new List<MovieImage>();
     }
 }
